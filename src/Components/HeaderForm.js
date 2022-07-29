@@ -12,7 +12,7 @@ function Header() {
       ));
       setData(element.results);
     });
-  }, []);
+  }, [setData]);
 
   console.log(data);
 
