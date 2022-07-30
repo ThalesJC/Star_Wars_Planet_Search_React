@@ -3,7 +3,7 @@ import fetchPlanets from '../services/FetchAPI';
 import StarwarsContext from '../context/StarwarsContext';
 
 function Header() {
-  const { data, setData } = useContext(StarwarsContext);
+  const { setData } = useContext(StarwarsContext);
 
   useEffect(() => {
     fetchPlanets().then((element) => {
@@ -13,8 +13,6 @@ function Header() {
       setData(element.results);
     });
   }, [setData]);
-
-  console.log(data);
 
   return (
     <>
