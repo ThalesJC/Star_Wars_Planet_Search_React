@@ -3,7 +3,7 @@ import fetchPlanets from '../services/FetchAPI';
 import StarwarsContext from '../context/StarwarsContext';
 
 function Header() {
-  const { setData, filterByName: { name }, setName } = useContext(StarwarsContext);
+  const { data, setData, filterByName: { name }, setName } = useContext(StarwarsContext);
   const column = ['population', 'orbital_period',
     'diameter', 'rotation_period', 'surface_water'];
 
@@ -17,7 +17,8 @@ function Header() {
   }, [setData]);
 
   const filterClick = () => {
-    console.log('Ola');
+    console.log(data);
+    setData(data.filter((planet) => planet.diameter !== '10465'));
   };
 
   return (
