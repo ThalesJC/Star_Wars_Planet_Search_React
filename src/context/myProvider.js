@@ -5,12 +5,19 @@ import StarwarsContext from './StarwarsContext';
 function Provider({ children }) {
   const [data, setData] = useState([]);
   const [filterByName, setName] = useState({ name: '' });
+  const [filterByNumericValues, setNumericValues] = useState({
+    comumn: '',
+    comparison: '',
+    value: '',
+  });
 
   const state = {
     data,
     setData,
     filterByName,
     setName,
+    filterByNumericValues,
+    setNumericValues,
   };
 
   return (

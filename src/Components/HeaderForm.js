@@ -4,6 +4,8 @@ import StarwarsContext from '../context/StarwarsContext';
 
 function Header() {
   const { setData, filterByName: { name }, setName } = useContext(StarwarsContext);
+  const column = ['population', 'orbital_period',
+    'diameter', 'rotation_period', 'surface_water'];
 
   useEffect(() => {
     fetchPlanets().then((element) => {
@@ -15,7 +17,7 @@ function Header() {
   }, [setData]);
 
   return (
-    <>
+    <header>
       <h1>Projeto Star Wars - Trybe</h1>
       <input
         value={ name }
@@ -24,22 +26,35 @@ function Header() {
         placeholder="Pesquisar"
         data-testid="name-filter"
       />
-      <div>
+      <section>
         <label htmlFor="coluna">
           Coluna
           <select id="coluna" data-testid="column-filter">
-            <option>exemplo</option>
+            { column.map((opt, index) => (
+              <option key={ index }>{opt}</option>
+            ))}
           </select>
         </label>
 
         <label htmlFor="operador">
           Operador
           <select id="operador" data-testid="comparison-filter">
-            <option>exemplo</option>
+            <option>maior que</option>
+            <option>menor que</option>
+            <option>igual a</option>
+
           </select>
         </label>
 
-        <input type="number" data-testid="value-filter" />
+        <label htmlFor="number">
+          valor
+          <input
+            id="number"
+            type="number"
+            placeholder="digite algum valor"
+            data-testid="value-filter"
+          />
+        </label>
 
         <button type="button" data-testid="button-filter">FILTRAR</button>
 
@@ -64,8 +79,8 @@ function Header() {
         <button type="button">ORDENAR</button>
 
         <button type="button">REMOVER FILTROS</button>
-      </div>
-    </>
+      </section>
+    </header>
   );
 }
 
