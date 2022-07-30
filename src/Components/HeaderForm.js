@@ -3,7 +3,7 @@ import fetchPlanets from '../services/FetchAPI';
 import StarwarsContext from '../context/StarwarsContext';
 
 function Header() {
-  const { setData } = useContext(StarwarsContext);
+  const { setData, filterByName: { name }, setName } = useContext(StarwarsContext);
 
   useEffect(() => {
     fetchPlanets().then((element) => {
@@ -17,7 +17,13 @@ function Header() {
   return (
     <>
       <h1>Projeto Star Wars - Trybe</h1>
-      <input type="text" placeholder="Pesquisar" data-testid="name-filter" />
+      <input
+        value={ name }
+        onChange={ ({ target }) => setName({ name: target.value }) }
+        type="text"
+        placeholder="Pesquisar"
+        data-testid="name-filter"
+      />
       <div>
         <label htmlFor="coluna">
           Coluna

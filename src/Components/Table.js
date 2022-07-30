@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import StarwarsContext from '../context/StarwarsContext';
 
 function Table() {
-  const { data } = useContext(StarwarsContext);
+  const { data, filterByName: { name } } = useContext(StarwarsContext);
   const options = ['name', 'rotation_period', 'orbital_period', 'diameter', 'climate',
     'gravity', 'terrain', 'surface_water', 'population', 'films', 'created', 'edited',
     'url'];
@@ -27,15 +27,16 @@ function Table() {
         </tr>
       </thead>
       <tbody>
-        { data.map((planet) => (
-          <tr key={ planet.name }>
-            { options.map((value, index) => (
-              <td key={ `${index}_${value}` }>
-                { planet[value] }
-              </td>
-            )) }
-          </tr>
-        )) }
+        { data.filter((planet) => planet.name.toLowerCase().includes(name.toLowerCase()))
+          .map((planet) => (
+            <tr key={ planet.name }>
+              { options.map((value, index) => (
+                <td key={ `${index}_${value}` }>
+                  { planet[value] }
+                </td>
+              )) }
+            </tr>
+          )) }
       </tbody>
     </table>
   );
