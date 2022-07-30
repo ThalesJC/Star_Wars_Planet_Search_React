@@ -16,6 +16,10 @@ function Header() {
     });
   }, [setData]);
 
+  const filterClick = () => {
+    console.log('Ola');
+  };
+
   return (
     <header>
       <h1>Projeto Star Wars - Trybe</h1>
@@ -56,7 +60,13 @@ function Header() {
           />
         </label>
 
-        <button type="button" data-testid="button-filter">FILTRAR</button>
+        <button
+          type="button"
+          onClick={ filterClick }
+          data-testid="button-filter"
+        >
+          FILTRAR
+        </button>
 
         <label htmlFor="ordenar">
           Ordenar
