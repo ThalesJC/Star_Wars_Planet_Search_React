@@ -6,7 +6,7 @@ function Provider({ children }) {
   const [data, setData] = useState([]);
   const [filterByName, setName] = useState({ name: '' });
   const [filterByNumericValues, setNumericValues] = useState({
-    comumn: '',
+    column: '',
     comparison: '',
     value: '',
   });
