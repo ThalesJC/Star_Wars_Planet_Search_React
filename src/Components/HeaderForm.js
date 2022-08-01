@@ -17,7 +17,7 @@ function Header() {
   }, [setData]);
 
   const filterClick = () => {
-    setData(data.filter((planet) => planet.diameter !== '10465'));
+    setData(data.filter((planet) => planet.diameter === '10465'));
   };
 
   return (
