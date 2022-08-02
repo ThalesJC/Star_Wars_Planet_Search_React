@@ -1,11 +1,18 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import fetchPlanets from '../services/FetchAPI';
 import StarwarsContext from '../context/StarwarsContext';
 
 function Header() {
-  const { data, setData, filterByName: { name }, setName } = useContext(StarwarsContext);
-  const column = ['population', 'orbital_period',
+  const [column, setColumn] = useState('population');
+  const [operator, setOperator] = useState('maior que');
+  const [value, setValue] = useState(0);
+
+  const { setData, filterByName: { name }, setName,
+    setNumericValues } = useContext(StarwarsContext);
+  const columnOpts = ['population', 'orbital_period',
     'diameter', 'rotation_period', 'surface_water'];
+
+  const operador = ['maior que', 'menor que', 'igual a'];
 
   useEffect(() => {
     fetchPlanets().then((element) => {
@@ -17,7 +24,11 @@ function Header() {
   }, [setData]);
 
   const filterClick = () => {
-    setData(data.filter((planet) => planet.diameter === '10465'));
+    setNumericValues({
+      column,
+      comparison: operator,
+      value,
+    });
   };
 
   return (
@@ -33,26 +44,39 @@ function Header() {
       <section>
         <label htmlFor="coluna">
           Coluna
-          <select id="coluna" data-testid="column-filter">
-            { column.map((opt, index) => (
-              <option key={ index }>{opt}</option>
+          <select
+            id="coluna"
+            value={ column }
+            onChange={ ({ target }) => setColumn(target.value) }
+            data-testid="column-filter"
+          >
+            { columnOpts.map((opt, index) => (
+              <option key={ index } value={ opt }>{opt}</option>
             ))}
           </select>
         </label>
 
         <label htmlFor="operador">
           Operador
-          <select id="operador" data-testid="comparison-filter">
-            <option>maior que</option>
-            <option>menor que</option>
-            <option>igual a</option>
-
+          <select
+            id="operador"
+            value={ operator }
+            onChange={ ({ target }) => setOperator(target.value) }
+            data-testid="comparison-filter"
+          >
+            {
+              operador.map((opt, index) => (
+                <option key={ index } value={ opt }>{opt}</option>
+              ))
+            }
           </select>
         </label>
 
         <label htmlFor="number">
           valor
           <input
+            value={ value }
+            onChange={ ({ target }) => setValue(target.value) }
             id="number"
             type="number"
             placeholder="digite algum valor"
@@ -78,11 +102,11 @@ function Header() {
         <div>
           <label htmlFor="ascendente">
             Ascendente
-            <input type="radio" />
+            <input type="radio" name="order" />
           </label>
           <label htmlFor="descentente">
             Descentente
-            <input type="radio" />
+            <input type="radio" name="order" />
           </label>
         </div>
 

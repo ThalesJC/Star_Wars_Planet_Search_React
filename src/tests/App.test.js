@@ -5,23 +5,22 @@ import { mock } from './mock/index';
 // import userEvent from '@testing-library/user-event';
 
 describe('01-testa o fetch da aplicação', () => {
+  
+  beforeEach(() => {
+    const fetchApi = () => {
+      jest.spyOn(global, 'fetch')
+        .mockImplementation(() => Promise.resolve({
+          json: () => Promise.resolve(mock)
+        }));
+    }
+    render(<App />);
+  });
   afterEach(() => jest.clearAllMocks());
 
   test('fetch planets', async () => {
-    global.fetch = () => {
-      return Promise.resolve({
-        json: () => Promise.resolve(mock)
-      })
-    }
-
-    render(<App />);
-
-    try {
-      const planetMocked = await screen.findByRole('cell', { name: /tatooine/i})
+    
+    const planetMocked = await screen.findByRole('cell', { name: /tatooine/i})
     expect(planetMocked).toBeInTheDocument();
-    } catch (error) {
-      throw error
-    }
   });
 });
 
@@ -38,9 +37,9 @@ describe('02-testa o componente Header', () => {
   const inputSearchEl = screen.getByTestId("name-filter");
   expect(inputSearchEl).toBeInTheDocument();
 
-  // userEvent.type(inputSearchEl, 'naboo');
-  // const searchResults = await  screen.getByText(/naboo/i);
-  // expect(searchResults).toBeInTheDocument();
+  userEvent.type(inputSearchEl, 'naboo');
+  const searchResults = await  screen.getByText(/naboo/i);
+  expect(searchResults).toBeInTheDocument();
   });
   test('Existe um select que filtra por coluna?', () => {
   const columnSearchEl = screen.getByTestId("column-filter");
@@ -60,4 +59,4 @@ describe('02-testa o componente Header', () => {
   });
 });
 
-describe('03-testa o componente Table', () => {});
+// describe('03-testa o componente Table', () => {});
