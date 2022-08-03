@@ -3,7 +3,7 @@ import StarwarsContext from '../context/StarwarsContext';
 
 function Table() {
   const { data, filterByName: { name }, filterByNumericValues:
-  { column, comparison, value } } = useContext(StarwarsContext);
+{ column, comparison, value } } = useContext(StarwarsContext);
   const options = ['name', 'rotation_period', 'orbital_period', 'diameter', 'climate',
     'gravity', 'terrain', 'surface_water', 'population', 'films', 'created', 'edited',
     'url'];
@@ -32,10 +32,10 @@ function Table() {
           .filter((planet) => {
             switch (comparison) {
             case 'maior que':
-              return planet[column] > value;
+              return Number(planet[column]) > value;
 
             case 'menor que':
-              return planet[column] < value;
+              return Number(planet[column]) < value;
 
             default:
               return planet[column] === value;

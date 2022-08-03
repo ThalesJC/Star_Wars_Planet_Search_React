@@ -9,6 +9,7 @@ function Header() {
 
   const { setData, filterByName: { name }, setName,
     setNumericValues } = useContext(StarwarsContext);
+
   const columnOpts = ['population', 'orbital_period',
     'diameter', 'rotation_period', 'surface_water'];
 
@@ -77,6 +78,7 @@ function Header() {
           <input
             value={ value }
             onChange={ ({ target }) => setValue(target.value) }
+            onFocus={ () => setValue('') }
             id="number"
             type="number"
             placeholder="digite algum valor"
