@@ -5,7 +5,6 @@ import { mock } from './mock/index';
 // import userEvent from '@testing-library/user-event';
 
 describe('01-testa o fetch da aplicação', () => {
-  
   beforeEach(() => {
     const fetchApi = () => {
       jest.spyOn(global, 'fetch')
