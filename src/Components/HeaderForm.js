@@ -48,15 +48,31 @@ function Header() {
     );
   }, [columnOptions]);
 
-  //   console.log(columnOpts);
+  const removeFilter = (parametro) => {
+    const deleteFilter = [...multiple];
+    deleteFilter.splice(multiple.indexOf(parametro), 1);
+    setMultiple(deleteFilter);
+    setOptions([
+      ...columnOptions,
+      parametro,
+    ]);
+  };
+
+  const removeAllFilters = () => {
+    setOptions([
+      ...columnOptions,
+      ...multiple.map((el) => el.column),
+    ]);
+    setMultiple([]);
+  };
 
   const renderFilters = () => (
     <section>
       <h3>Filtros aplicados!</h3>
       {multiple.map((el, i) => (
-        <div key={ i }>
+        <div data-testid="filter" key={ i }>
           <p>{ `${el.column}, ${el.comparison} ${el.value}` }</p>
-          <button type="button">Excluir</button>
+          <button onClick={ () => removeFilter(el.column) } type="button">Excluir</button>
         </div>
       ))}
     </section>
@@ -144,7 +160,13 @@ function Header() {
 
         <button type="button">ORDENAR</button>
 
-        <button type="button">REMOVER FILTROS</button>
+        <button
+          data-testid="button-remove-filters"
+          type="button"
+          onClick={ removeAllFilters }
+        >
+          REMOVER FILTROS
+        </button>
       </section>
       { multiple.length > 0 && renderFilters()}
     </header>
