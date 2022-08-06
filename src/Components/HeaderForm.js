@@ -6,12 +6,11 @@ function Header() {
   const [column, setColumn] = useState('population');
   const [comparison, setOperator] = useState('maior que');
   const [value, setValue] = useState(0);
+  const [columnOptions, setOptions] = useState(['population', 'orbital_period',
+    'diameter', 'rotation_period', 'surface_water']);
 
   const { setData, filterByName: { name }, setName,
     setNumericValues, multiple, setMultiple } = useContext(StarwarsContext);
-
-  const columnOpts = ['population', 'orbital_period',
-    'diameter', 'rotation_period', 'surface_water'];
 
   const operador = ['maior que', 'menor que', 'igual a'];
 
@@ -36,7 +35,20 @@ function Header() {
         comparison,
         value },
     ]);
+    const columnOpt = [...columnOptions];
+    columnOpt.splice(columnOptions.indexOf(column), 1);
+    setOptions(
+      columnOpt,
+    );
   };
+
+  useEffect(() => {
+    setColumn(
+      columnOptions[0],
+    );
+  }, [columnOptions]);
+
+  //   console.log(columnOpts);
 
   const renderFilters = () => (
     <section>
@@ -69,7 +81,7 @@ function Header() {
             onChange={ ({ target }) => setColumn(target.value) }
             data-testid="column-filter"
           >
-            { columnOpts.map((opt, index) => (
+            { columnOptions.map((opt, index) => (
               <option key={ index } value={ opt }>{opt}</option>
             ))}
           </select>
