@@ -2,11 +2,38 @@ import React, { useContext } from 'react';
 import StarwarsContext from '../context/StarwarsContext';
 
 function Table() {
-  const { data, filterByName: { name }, filterByNumericValues:
-{ column, comparison, value } } = useContext(StarwarsContext);
+  const { data, filterByName: { name }, multiple } = useContext(StarwarsContext);
   const options = ['name', 'rotation_period', 'orbital_period', 'diameter', 'climate',
     'gravity', 'terrain', 'surface_water', 'population', 'films', 'created', 'edited',
     'url'];
+
+  const render = () => (
+    data.filter((planet) => planet.name.toLowerCase().includes(name.toLowerCase()))
+      .filter((planet) => multiple.every(({
+        column: coluna,
+        comparison: comparacao,
+        value: valor }) => {
+        switch (comparacao) {
+        case 'maior que':
+          return Number(planet[coluna]) > valor;
+
+        case 'menor que':
+          return Number(planet[coluna]) < valor;
+
+        default:
+          return planet[coluna] === valor;
+        }
+      }))
+      .map((planet) => (
+        <tr key={ planet.name }>
+          { options.map((cell, index) => (
+            <td key={ `${index}_${cell}` }>
+              { planet[cell] }
+            </td>
+          )) }
+        </tr>
+      ))
+  );
 
   return (
     <table>
@@ -28,28 +55,7 @@ function Table() {
         </tr>
       </thead>
       <tbody>
-        { data.filter((planet) => planet.name.toLowerCase().includes(name.toLowerCase()))
-          .filter((planet) => {
-            switch (comparison) {
-            case 'maior que':
-              return Number(planet[column]) > value;
-
-            case 'menor que':
-              return Number(planet[column]) < value;
-
-            default:
-              return planet[column] === value;
-            }
-          })
-          .map((planet) => (
-            <tr key={ planet.name }>
-              { options.map((cell, index) => (
-                <td key={ `${index}_${cell}` }>
-                  { planet[cell] }
-                </td>
-              )) }
-            </tr>
-          )) }
+        { render() }
       </tbody>
     </table>
   );

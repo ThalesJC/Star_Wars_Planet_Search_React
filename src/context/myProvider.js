@@ -6,6 +6,7 @@ function Provider({ children }) {
   const [data, setData] = useState([]);
   const [filterByName, setName] = useState({ name: '' });
   const [filterByNumericValues, setNumericValues] = useState({});
+  const [multiple, setMultiple] = useState([]);
 
   const state = {
     data,
@@ -14,6 +15,8 @@ function Provider({ children }) {
     setName,
     filterByNumericValues,
     setNumericValues,
+    multiple,
+    setMultiple,
   };
 
   return (

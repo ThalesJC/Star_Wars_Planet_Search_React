@@ -4,11 +4,11 @@ import StarwarsContext from '../context/StarwarsContext';
 
 function Header() {
   const [column, setColumn] = useState('population');
-  const [operator, setOperator] = useState('maior que');
+  const [comparison, setOperator] = useState('maior que');
   const [value, setValue] = useState(0);
 
   const { setData, filterByName: { name }, setName,
-    setNumericValues } = useContext(StarwarsContext);
+    setNumericValues, multiple, setMultiple } = useContext(StarwarsContext);
 
   const columnOpts = ['population', 'orbital_period',
     'diameter', 'rotation_period', 'surface_water'];
@@ -27,10 +27,28 @@ function Header() {
   const filterClick = () => {
     setNumericValues({
       column,
-      comparison: operator,
+      comparison,
       value,
     });
+    setMultiple([
+      ...multiple,
+      { column,
+        comparison,
+        value },
+    ]);
   };
+
+  const renderFilters = () => (
+    <section>
+      <h3>Filtros aplicados!</h3>
+      {multiple.map((el, i) => (
+        <div key={ i }>
+          <p>{ `${el.column}, ${el.comparison} ${el.value}` }</p>
+          <button type="button">Excluir</button>
+        </div>
+      ))}
+    </section>
+  );
 
   return (
     <header>
@@ -61,7 +79,7 @@ function Header() {
           Operador
           <select
             id="operador"
-            value={ operator }
+            value={ comparison }
             onChange={ ({ target }) => setOperator(target.value) }
             data-testid="comparison-filter"
           >
@@ -116,6 +134,7 @@ function Header() {
 
         <button type="button">REMOVER FILTROS</button>
       </section>
+      { multiple.length > 0 && renderFilters()}
     </header>
   );
 }
