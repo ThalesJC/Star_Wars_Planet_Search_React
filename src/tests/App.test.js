@@ -17,7 +17,6 @@ describe('testes unitarios projeto starwars', () => {
   afterEach(() => jest.clearAllMocks());
 
   test('fetch planets', async () => {
-    
     const planetMocked = await screen.findByRole('cell', { name: /tatooine/i})
     expect(planetMocked).toBeInTheDocument();
   });
@@ -57,33 +56,54 @@ describe('testes unitarios projeto starwars', () => {
     userEvent.click(filterButton);
     });
   
-    test('interage com a busca numerica', async () => {
+    test('Testa se é possivel aplicar mais de um filtro, e os apaga', async () => {
       const columnEl = screen.getByRole("combobox", { name: /coluna/i });
       const operatorEl = screen.getByRole("combobox", { name: /operador/i});
       const valueElInput = screen.getByRole("spinbutton", { name: /valor/i });
       const filterButton = screen.getByRole("button", {name: /filtrar/i});
+      const deleteAllBtn = screen.getByRole("button", { name: /remover filtros/i });
 
-
-  
-      userEvent.selectOptions(columnEl, "surface_water");
-      userEvent.selectOptions(operatorEl, "igual a");
-      userEvent.type(valueElInput, "40");
+      userEvent.selectOptions(columnEl, "diameter");
+      userEvent.selectOptions(operatorEl, "maior que");
+      userEvent.type(valueElInput, "9000");
       userEvent.click(filterButton);
-      const searchResult01 = await screen.findByRole('cell', {  name: /alderaan/i})
-      expect(searchResult01).toBeInTheDocument();
       
       userEvent.selectOptions(columnEl, "population");
-      userEvent.selectOptions(operatorEl, "maior que");
-      userEvent.type(valueElInput, "200000");
-      userEvent.click(filterButton);
-      const searchResult02 = await screen.findByRole('cell', {  name: /bespin/i})
-      expect(searchResult02).toBeInTheDocument();
-
-      userEvent.selectOptions(columnEl, "rotation_period");
       userEvent.selectOptions(operatorEl, "menor que");
-      userEvent.type(valueElInput, "20");
+      userEvent.type(valueElInput, "1000000");
       userEvent.click(filterButton);
-      const searchResult03 = await screen.findByRole('cell', {  name: /endor/i})
-      expect(searchResult03).toBeInTheDocument();
+
+      const searchResult02 = await screen.findByRole('cell', {  name: /tatooine/i})
+      const searchResult01 = await screen.findByRole('cell', {  name: /yavin iv/i})
+      const deleteBtnEl = screen.getAllByRole("button", { name: /excluir/i});
+
+      expect(searchResult01).toBeInTheDocument();
+      expect(searchResult02).toBeInTheDocument();
+      expect(deleteBtnEl).toHaveLength(2);
+      expect(deleteAllBtn).toBeInTheDocument();
+
+      userEvent.click(deleteBtnEl[1]);
+
+      const deleteBtnAfterClick = screen.getAllByRole("button", { name: /excluir/i});
+
+      expect(deleteBtnAfterClick).toHaveLength(1);
+
+      userEvent.click(deleteAllBtn);
+
+      
+    });
+    test('Adicione um filtro e verifique se a tabela foi atualizada com as informações filtradas', async () => {
+      const columnEl = screen.getByRole("combobox", { name: /coluna/i });
+      const operatorEl = screen.getByRole("combobox", { name: /operador/i});
+      const valueElInput = screen.getByRole("spinbutton", { name: /valor/i });
+      const filterButton = screen.getByRole("button", {name: /filtrar/i});
+  
+      userEvent.selectOptions(columnEl, "orbital_period");
+      userEvent.selectOptions(operatorEl, "igual a");
+      userEvent.type(valueElInput, "368");
+      userEvent.click(filterButton);
+
+      const searchResult01 = await screen.findByRole('cell', {  name: /coruscant/i});
+      expect(searchResult01).toBeInTheDocument();
     });
 });
