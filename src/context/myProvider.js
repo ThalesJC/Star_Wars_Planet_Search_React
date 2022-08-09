@@ -7,6 +7,10 @@ function Provider({ children }) {
   const [filterByName, setName] = useState({ name: '' });
   const [filterByNumericValues, setNumericValues] = useState({});
   const [multiple, setMultiple] = useState([]);
+  const [order, setOrder] = useState({
+    column: 'population',
+    sort: 'ASC',
+  });
 
   const state = {
     data,
@@ -17,6 +21,8 @@ function Provider({ children }) {
     setNumericValues,
     multiple,
     setMultiple,
+    order,
+    setOrder,
   };
 
   return (

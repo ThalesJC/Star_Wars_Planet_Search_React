@@ -9,17 +9,28 @@ function Header() {
   const [columnOptions, setOptions] = useState(['population', 'orbital_period',
     'diameter', 'rotation_period', 'surface_water']);
 
-  const { setData, filterByName: { name }, setName,
-    setNumericValues, multiple, setMultiple } = useContext(StarwarsContext);
+  const { data, setData, filterByName: { name }, setName,
+    setNumericValues, multiple, setMultiple, order, setOrder,
+  } = useContext(StarwarsContext);
 
   const operador = ['maior que', 'menor que', 'igual a'];
+
+  const orderFilter = ['population', 'orbital_period',
+    'diameter', 'rotation_period', 'surface_water'];
 
   useEffect(() => {
     fetchPlanets().then((element) => {
       element.results.map((planeta) => (
         delete planeta.residents
       ));
-      setData(element.results);
+      const nomagicnumber = -1;
+      setData(element.results.sort((a, b) => {
+        if (a.name > b.name) {
+          return 1;
+        } if (a.name < b.name) {
+          return nomagicnumber;
+        } return 0;
+      }));
     });
   }, [setData]);
 
@@ -77,6 +88,22 @@ function Header() {
       ))}
     </section>
   );
+
+  const onSortChange = ({ target }) => {
+    setOrder({
+      ...order,
+      [target.name]: target.value,
+    });
+  };
+
+  const onHandleClick = () => {
+    const unknownFilter = (el) => el[order.column] === 'unknown';
+    const unknownElements = data.filter(unknownFilter);
+    const elements = data.filter((planet) => !unknownFilter(planet)).sort((a, b) => (
+      order.sort === 'ASC'
+        ? a[order.column] - b[order.column] : b[order.column] - a[order.column]));
+    setData([...elements, ...unknownElements]);
+  };
 
   return (
     <header>
@@ -142,23 +169,48 @@ function Header() {
 
         <label htmlFor="ordenar">
           Ordenar
-          <select id="ordenar">
-            <option>exemplo</option>
+          <select
+            name="column"
+            onChange={ onSortChange }
+            data-testid="column-sort"
+            id="ordenar"
+          >
+            {orderFilter.map((el, i) => (
+              <option key={ i }>{el}</option>
+            ))}
           </select>
         </label>
 
         <div>
           <label htmlFor="ascendente">
             Ascendente
-            <input type="radio" name="order" />
+            <input
+              data-testid="column-sort-input-asc"
+              value="ASC"
+              type="radio"
+              name="sort"
+              onChange={ onSortChange }
+            />
           </label>
           <label htmlFor="descentente">
             Descentente
-            <input type="radio" name="order" />
+            <input
+              data-testid="column-sort-input-desc"
+              value="DESC"
+              type="radio"
+              name="sort"
+              onChange={ onSortChange }
+            />
           </label>
         </div>
 
-        <button type="button">ORDENAR</button>
+        <button
+          onClick={ onHandleClick }
+          data-testid="column-sort-button"
+          type="button"
+        >
+          ORDENAR
+        </button>
 
         <button
           data-testid="button-remove-filters"

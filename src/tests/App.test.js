@@ -30,7 +30,7 @@ describe('testes unitarios projeto starwars', () => {
     const inputSearchEl = screen.getByTestId("name-filter");
     expect(inputSearchEl).toBeInTheDocument();
   
-    userEvent.type(inputSearchEl, 'naboo');
+    userEvent.type(inputSearchEl, 'oo');
     const searchResults = await  screen.findByRole('cell', { name: /naboo/i });
     expect(searchResults).toBeInTheDocument();
     });

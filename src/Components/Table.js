@@ -2,17 +2,31 @@ import React, { useContext } from 'react';
 import StarwarsContext from '../context/StarwarsContext';
 
 function Table() {
-  const { data, filterByName: { name }, multiple } = useContext(StarwarsContext);
-  const options = ['name', 'rotation_period', 'orbital_period', 'diameter', 'climate',
-    'gravity', 'terrain', 'surface_water', 'population', 'films', 'created', 'edited',
-    'url'];
+  const {
+    data,
+    filterByName: { name },
+    multiple,
+  } = useContext(StarwarsContext);
+  const options = [
+    'name',
+    'rotation_period',
+    'orbital_period',
+    'diameter',
+    'climate',
+    'gravity',
+    'terrain',
+    'surface_water',
+    'population',
+    'films',
+    'created',
+    'edited',
+    'url',
+  ];
 
-  const render = () => (
-    data.filter((planet) => planet.name.toLowerCase().includes(name.toLowerCase()))
-      .filter((planet) => multiple.every(({
-        column: coluna,
-        comparison: comparacao,
-        value: valor }) => {
+  const render = () => data
+    .filter((planet) => planet.name.toLowerCase().includes(name.toLowerCase()))
+    .filter((planet) => multiple.every(
+      ({ column: coluna, comparison: comparacao, value: valor }) => {
         switch (comparacao) {
         case 'maior que':
           return Number(planet[coluna]) > valor;
@@ -23,17 +37,17 @@ function Table() {
         default:
           return planet[coluna] === valor;
         }
-      }))
-      .map((planet) => (
-        <tr key={ planet.name }>
-          { options.map((cell, index) => (
-            <td key={ `${index}_${cell}` }>
-              { planet[cell] }
-            </td>
-          )) }
-        </tr>
-      ))
-  );
+      },
+    ))
+    .map((planet) => (
+      <tr key={ planet.name }>
+        {options.map((cell, index) => (index === 0 ? (
+          <td data-testid="planet-name" key={ `${index}_${cell}` }>{planet[cell]}</td>
+        ) : (
+          <td key={ `${index + 1}_${cell}` }>{planet[cell]}</td>
+        )))}
+      </tr>
+    ));
 
   return (
     <table>
@@ -54,9 +68,7 @@ function Table() {
           <th>URL</th>
         </tr>
       </thead>
-      <tbody>
-        { render() }
-      </tbody>
+      <tbody>{render()}</tbody>
     </table>
   );
 }
