@@ -27,9 +27,8 @@ function Header() {
       setData(element.results.sort((a, b) => {
         if (a.name > b.name) {
           return 1;
-        } if (a.name < b.name) {
-          return nomagicnumber;
-        } return 0;
+        }
+        return nomagicnumber;
       }));
     });
   }, [setData]);
@@ -98,10 +97,13 @@ function Header() {
 
   const onHandleClick = () => {
     const unknownFilter = (el) => el[order.column] === 'unknown';
-    const unknownElements = data.filter(unknownFilter);
-    const elements = data.filter((planet) => !unknownFilter(planet)).sort((a, b) => (
-      order.sort === 'ASC'
-        ? a[order.column] - b[order.column] : b[order.column] - a[order.column]));
+    const unknownElements = data.filter((el) => unknownFilter(el));
+    const elements = data.filter((planet) => !unknownFilter(planet));
+    elements.sort((a, b) => {
+      if (order.sort === 'ASC') {
+        return a[order.column] - b[order.column];
+      } return b[order.column] - a[order.column];
+    });
     setData([...elements, ...unknownElements]);
   };
 

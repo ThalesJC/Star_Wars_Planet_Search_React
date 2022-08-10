@@ -1,17 +1,16 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import App from '../App';
-import { mock } from './mock/index';
 import userEvent from '@testing-library/user-event';
+import testData from '../../cypress/mocks/testData';
+
 
 describe('testes unitarios projeto starwars', () => {
   beforeEach(() => {
-    const fetchApi = () => {
       jest.spyOn(global, 'fetch')
         .mockImplementation(() => Promise.resolve({
-          json: () => Promise.resolve(mock)
+          json: () => Promise.resolve(testData)
         }));
-    }
     render(<App />);
   });
   afterEach(() => jest.clearAllMocks());
@@ -105,5 +104,32 @@ describe('testes unitarios projeto starwars', () => {
 
       const searchResult01 = await screen.findByRole('cell', {  name: /coruscant/i});
       expect(searchResult01).toBeInTheDocument();
+    });
+    test('verifica a ordem inicial dos planetas', () => {
+      const applyOrderBtn = screen.getByRole('button', { name: /ordenar/i });
+      userEvent.click(applyOrderBtn);
+
+    });
+    test('verifica se é possivel ordenar em ordem CRESCENTE', () => {
+      const orderBtn = screen.getByRole('combobox', {  name: /ordenar/i});
+      const ascRadio = screen.getByTestId('column-sort-input-asc');
+      const applyOrderBtn = screen.getByRole('button', { name: /ordenar/i });
+
+      userEvent.selectOptions(orderBtn, 'diameter');
+      userEvent.click(ascRadio);
+      userEvent.click(applyOrderBtn);
+
+      expect(orderBtn).toBeInTheDocument();
+      expect(ascRadio).toBeInTheDocument();
+      expect(applyOrderBtn).toBeInTheDocument();
+    });
+    test('Verifica se é possivel ordenar em ordem DECRESCENTE', () => {
+      const orderBtn = screen.getByRole('combobox', {  name: /ordenar/i});
+      const descRadio = screen.getByTestId('column-sort-input-desc');
+      const applyOrderBtn = screen.getByRole('button', { name: /ordenar/i });
+
+      userEvent.selectOptions(orderBtn, 'population');
+      userEvent.click(descRadio);
+      userEvent.click(applyOrderBtn);
     });
 });
