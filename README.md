@@ -1,13 +1,38 @@
-# :construction: README customizado em construção ! :construction:
-<!-- Olá, Tryber!
-Esse é apenas um arquivo inicial para o README do seu projeto no qual você pode customizar e reutilizar todas as vezes que for executar o trybe-publisher.
+# Star Wars Planet Search
 
-Para deixá-lo com a sua cara, basta alterar o seguinte arquivo da sua máquina: ~/.student-repo-publisher/custom/_NEW_README.md
+# Contexto
+Este projeto foi desenvolvido como avaliação no curso de desenvolvimento fullstack que cursei na trybe, nesse projeto foi desenvolvido uma plataforma que lista os planetas da saga Star Wars juntamente com algumas informaçoes relacionadas a cada planeta, o objetivo do projeto foi consumir um API e utilizar ContextAPI e React hooks para controle de estado dos componentes, permitindo fazer buscas e ordenações de acordo com as informações dos planetas.
 
-É essencial que você preencha esse documento por conta própria, ok?
-Não deixe de usar nossas dicas de escrita de README de projetos, e deixe sua criatividade brilhar!
-:warning: IMPORTANTE: você precisa deixar nítido:
-- quais arquivos/pastas foram desenvolvidos por você; 
-- quais arquivos/pastas foram desenvolvidos por outra pessoa estudante;
-- quais arquivos/pastas foram desenvolvidos pela Trybe.
--->
+## Técnologias usadas
+
+Front-end:
+> Desenvolvido usando: React, ContextAPI, React hooks, React Testing Library.
+
+Back-end:
+>Foi consumida a seguinte API: "https://swapi-trybe.herokuapp.com/api/planets/"
+
+
+## Instalando Dependências
+
+> Frontend
+```bash
+npm install
+``` 
+## Executando aplicação
+
+  ```
+  npm start
+  ```
+
+## Executando Testes
+
+* Para rodar todos os testes:
+
+  ```
+    npm test
+  ```
+* Para rodar os testes de cobertura:
+
+  ```
+  npm run test-coverage
+  ```
