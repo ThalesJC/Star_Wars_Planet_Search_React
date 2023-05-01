@@ -9,7 +9,7 @@ Front-end:
 > Desenvolvido usando: React, ContextAPI, React hooks, React Testing Library.
 
 Back-end:
->Foi consumida a seguinte API: "https://swapi-trybe.herokuapp.com/api/planets/"
+>Foi consumida a seguinte API: "https://swapi.dev/api/planets"
 
 
 ## Instalando Dependências
