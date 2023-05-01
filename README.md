@@ -26,11 +26,6 @@ npm install
 
 ## Executando Testes
 
-* Para rodar todos os testes:
-
-  ```
-    npm test
-  ```
 * Para rodar os testes de cobertura:
 
   ```
